@@ -9,7 +9,7 @@
 namespace TB\Form\Element;
 
 use Wa72\HtmlPageDom\HtmlPageCrawler;
-use Zend\Filter;
+use TB\Filter;
 
 class Text extends AbstractElement
 {
@@ -19,8 +19,7 @@ class Text extends AbstractElement
     protected function getDefaultSerializationFilters()
     {
         return array(
-            $this->sm()->create('form.filter.string'),
-            new Filter\ToInt()
+            new Filter\ToString()
         );
     }
 
@@ -30,7 +29,7 @@ class Text extends AbstractElement
     protected function getDefaultDeserializationFilters()
     {
         return array(
-            $this->sm()->create('form.filter.string')
+            new Filter\ToString()
         );
     }
 

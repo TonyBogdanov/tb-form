@@ -10,6 +10,12 @@
             "email": "support@tonybogdanov.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:TonyBogdanov/tb-filter.git"
+        }
+    ],
     "config": {
         "vendor-dir": "vendor"
     },
@@ -22,6 +28,7 @@
         "symfony/var-dumper": "^3.3"
     },
     "require": {
+        "TonyBogdanov/tb-filter": "*",
         "wa72/htmlpagedom": "dev-master",
         "zendframework/zend-filter": "^2.7@dev"
     }
