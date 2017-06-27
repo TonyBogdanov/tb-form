@@ -1,0 +1,28 @@
+{
+    "name": "tonybogdanov/tb-form",
+    "description": "A tb-framework form component",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Tony Bogdanov",
+            "email": "support@tonybogdanov.com"
+        }
+    ],
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "TB\\Form\\": "src"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3.3"
+    },
+    "require": {
+        "wa72/htmlpagedom": "dev-master",
+        "zendframework/zend-filter": "^2.7@dev"
+    }
+}
