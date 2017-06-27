@@ -10,12 +10,6 @@
             "email": "support@tonybogdanov.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@github.com:TonyBogdanov/tb-filter.git"
-        }
-    ],
     "config": {
         "vendor-dir": "vendor"
     },
