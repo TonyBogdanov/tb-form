@@ -38,7 +38,7 @@ class Text extends AbstractElement
      */
     public function render(array $parents = array())
     {
-        $render = new HtmlPageCrawler();
+        $render = new HtmlPageCrawler('<input/>');
         $render
             ->attr('type', 'text')
             ->attr('name', $this->getNameForRendering($parents))

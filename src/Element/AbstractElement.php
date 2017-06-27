@@ -8,16 +8,11 @@
 
 namespace TB\Form\Element;
 
-use TB\Form\Decorator\DecoratorAbstract;
+use TB\Form\Decorator\AbstractDecorator;
 use TB\Form\Form;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
+use Zend\Filter\AbstractFilter;
 
-/**
- * Base form element class.
- *
- * Class AbstractElement
- * @package TB\Form
- */
 abstract class AbstractElement
 {
     /**
@@ -111,26 +106,25 @@ abstract class AbstractElement
         return $this;
     }
 
-//    /**
-//     * Register a filter.
-//     *
-//     * @param TB_Form_Filter $filter
-//     * @param int $mode
-//     *
-//     * @return $this
-//     */
-//    private function addFilter(TB_Form_Filter $filter, $mode)
-//    {
-//        $this->lazyInitFilters();
-//
-//        $priority = $filter->getPriority();
-//        if(!isset($this->filters[$mode][$priority])) {
-//            $this->filters[$mode][$priority] = array();
-//        }
-//
-//        $this->filters[$mode][$priority][] = $filter;
-//        return $this;
-//    }
+    /**
+     * Register a filter.
+     *
+     * @param AbstractFilter $filter
+     * @param $mode
+     * @param int $priority
+     * @return $this
+     */
+    private function addFilter(AbstractFilter $filter, $mode, $priority = 10)
+    {
+        $this->lazyInitFilters();
+
+        if(!isset($this->filters[$mode][$priority])) {
+            $this->filters[$mode][$priority] = array();
+        }
+
+        $this->filters[$mode][$priority][] = $filter;
+        return $this;
+    }
 
     /**
      * Apply filters to the supplied value.
@@ -147,9 +141,9 @@ abstract class AbstractElement
 
         /** @var array $filters */
         foreach($this->filters[$mode] as $filters) {
-            /** @var TB_Form_Filter $filter */
+            /** @var AbstractFilter $filter */
             foreach($filters as $filter) {
-                $value = $filter->filter($value, $this);
+                $value = $filter->filter($value);
             }
         }
 
@@ -176,19 +170,20 @@ abstract class AbstractElement
         return [];
     }
 
-//    /**
-//     * Add a serialization filter.
-//     * Lower priority will result in earlier execution.
-//     *
-//     * Filters with the same priority are executed in the order they are registered.
-//     *
-//     * @param TB_Form_Filter $filter
-//     * @return $this
-//     */
-//    protected function addSerializationFilter(TB_Form_Filter $filter)
-//    {
-//        return $this->addFilter($filter, self::FILTER_MODE_SERIALIZE);
-//    }
+    /**
+     * Add a serialization filter.
+     * Lower priority will result in earlier execution.
+     *
+     * Filters with the same priority are executed in the order they are registered.
+     *
+     * @param AbstractFilter $filter
+     * @param int $priority
+     * @return AbstractElement
+     */
+    protected function addSerializationFilter(AbstractFilter $filter, $priority = 10)
+    {
+        return $this->addFilter($filter, self::FILTER_MODE_SERIALIZE, $priority);
+    }
 
     /**
      * Add multiple serialization filters.
@@ -198,9 +193,9 @@ abstract class AbstractElement
      */
     protected function addSerializationFilters(array $filters)
     {
-        /** @var TB_Form_Filter $filter */
+        /** @var AbstractFilter $filter */
         foreach($filters as $filter) {
-            if($filter instanceof TB_Form_Filter) {
+            if($filter instanceof AbstractFilter) {
                 $this->addSerializationFilter($filter);
             }
         }
@@ -213,30 +208,31 @@ abstract class AbstractElement
      *
      * Filters with the same priority are executed in the order they are registered.
      *
-     * @param TB_Form_Filter $filter
-     * @return $this
+     * @param AbstractFilter $filter
+     * @param int $priority
+     * @return AbstractElement
      */
-    protected function addDeserializationFilter(TB_Form_Filter $filter)
+    protected function addDeserializationFilter(AbstractFilter $filter, $priority = 10)
     {
-        return $this->addFilter($filter, self::FILTER_MODE_DESERIALIZE);
+        return $this->addFilter($filter, self::FILTER_MODE_DESERIALIZE, $priority);
     }
 
-//    /**
-//     * Add multiple deserialization filters.
-//     *
-//     * @param array $filters
-//     * @return $this
-//     */
-//    protected function addDeserializationFilters(array $filters)
-//    {
-//        /** @var TB_Form_Filter $filter */
-//        foreach($filters as $filter) {
-//            if($filter instanceof TB_Form_Filter) {
-//                $this->addDeserializationFilter($filter);
-//            }
-//        }
-//        return $this;
-//    }
+    /**
+     * Add multiple deserialization filters.
+     *
+     * @param array $filters
+     * @return $this
+     */
+    protected function addDeserializationFilters(array $filters)
+    {
+        /** @var AbstractFilter $filter */
+        foreach($filters as $filter) {
+            if($filter instanceof AbstractFilter) {
+                $this->addDeserializationFilter($filter);
+            }
+        }
+        return $this;
+    }
 
     /**
      * Render the element in the context of a chain of parent elements.
@@ -361,7 +357,7 @@ abstract class AbstractElement
             return $render;
         }
 
-        /** @var DecoratorAbstract $decorator */
+        /** @var AbstractDecorator $decorator */
         foreach($this->getDecorators() as $decorator) {
             // clone the render tag to avoid incorrect modification in decorators
             $render = $decorator->decorate(clone $render, $this, $parents);
@@ -554,10 +550,10 @@ abstract class AbstractElement
     }
 
     /**
-     * @param DecoratorAbstract $decorator
+     * @param AbstractDecorator $decorator
      * @return $this
      */
-    public function addDecorator(DecoratorAbstract $decorator)
+    public function addDecorator(AbstractDecorator $decorator)
     {
         $this->decorators[] = $decorator;
         return $this;
@@ -568,7 +564,7 @@ abstract class AbstractElement
      */
     public function resetDecorators()
     {
-        /** @var DecoratorAbstract $decorator */
+        /** @var AbstractDecorator $decorator */
         foreach ($this->decorators as $decorator) {
             $decorator->reset();
         }

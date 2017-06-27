@@ -8,16 +8,10 @@
 
 namespace TB\Form;
 
-use TB\Form\Decorator\DecoratorAbstract;
+use TB\Form\Decorator\AbstractDecorator;
 use TB\Form\Element\AbstractElement;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 
-/**
- * A fieldset element - a collection of form elements.
- *
- * Class Fieldset
- * @package TB\Form
- */
 class Fieldset extends AbstractElement
 {
     /**
@@ -162,10 +156,10 @@ class Fieldset extends AbstractElement
      * Recursively adds a decorator to all elements in the collection.
      * If any of the elements are collections themselves, they will also recurse the decorator to their children.
      *
-     * @param DecoratorAbstract $decorator
+     * @param AbstractDecorator $decorator
      * @return $this
      */
-    public function addDecoratorDeep(DecoratorAbstract $decorator)
+    public function addDecoratorDeep(AbstractDecorator $decorator)
     {
         /** @var AbstractElement $element */
         foreach ($this->getElementsWithoutPriorities() as $element) {
@@ -276,7 +270,7 @@ class Fieldset extends AbstractElement
      */
     public function render(array $parents = [])
     {
-        $render = new HtmlPageCrawler();
+        $render = new HtmlPageCrawler('<fieldset/>');
         if (!$this->hasElements()) {
             return $render;
         }

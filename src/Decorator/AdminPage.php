@@ -1,6 +1,6 @@
 <?php
 /**
- *  @package    TB Framework
+ *  @package    TB Form
  *  @author     Tony Bogdanov <support@tonybogdanov.com>
  *  @license    MIT http://www.opensource.org/licenses/mit-license.php
  *  @copyright  Copyright (c) 2017. www.tonybogdanov.com. All Rights Reserved.
@@ -8,21 +8,15 @@
 
 namespace TB\Form\Decorator;
 
-use TB\DOM\DOM;
 use TB\Form\Element\AbstractElement;
+use Wa72\HtmlPageDom\HtmlPageCrawler;
 
-/**
- * Decorator for displaying a form as an admin page.
- *
- * Class AdminPage
- * @package TB\Form\Decorator
- */
-class AdminPage extends DecoratorAbstract
+class AdminPage extends AbstractDecorator
 {
     /**
      * @inheritDoc
      */
-    public function decorate(DOM $render, AbstractElement $element, array $parents = [])
+    public function decorate(HtmlPageCrawler $render, AbstractElement $element, array $parents = [])
     {
         throw new \Exception(__METHOD__);
 

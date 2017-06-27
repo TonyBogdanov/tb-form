@@ -10,12 +10,6 @@ namespace TB\Form;
 
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 
-/**
- * Form element.
- *
- * Class Form
- * @package TB\Form
- */
 class Form extends Fieldset
 {
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- *  @package    TB Framework
+ *  @package    TB Form
  *  @author     Tony Bogdanov <support@tonybogdanov.com>
  *  @license    MIT http://www.opensource.org/licenses/mit-license.php
  *  @copyright  Copyright (c) 2017. www.tonybogdanov.com. All Rights Reserved.
@@ -8,24 +8,13 @@
 
 namespace TB\Form\Decorator;
 
-use TB\DOM\DOM;
 use TB\Form\Element\AbstractElement;
-use TB\ServiceManager\ServiceManagerAwareInterface;
-use TB\ServiceManager\ServiceManagerAwareTrait;
+use Wa72\HtmlPageDom\HtmlPageCrawler;
 
-/**
- * Form decorator base class.
- *
- * Class DecoratorAbstract
- * @package TB\Form
- */
-abstract class DecoratorAbstract implements
-    ServiceManagerAwareInterface
+abstract class AbstractDecorator
 {
-    use ServiceManagerAwareTrait;
-
     /**
-     * Holder for already decorated elements references.
+     * Holder for already decorated elements' references.
      *
      * @var array
      */
@@ -34,12 +23,12 @@ abstract class DecoratorAbstract implements
     /**
      * Decorate the result of calling a form element's render() method for the specified context.
      *
-     * @param DOM $render
+     * @param HtmlPageCrawler $render
      * @param AbstractElement $element
      * @param array $parents
      * @return mixed
      */
-    abstract public function decorate(DOM $render, AbstractElement $element, array $parents = []);
+    abstract public function decorate(HtmlPageCrawler $render, AbstractElement $element, array $parents = []);
 
     /**
      * Get the SPL hash of a form element in the context of the current decorator instance.
@@ -66,7 +55,7 @@ abstract class DecoratorAbstract implements
     /**
      * Sets the specified form element as already decorated by the this decorator instance.
      *
-     * @param \TB\Form\Element\AbstractElement $element
+     * @param AbstractElement $element
      * @return $this
      */
     protected function setDecorated(AbstractElement $element)
