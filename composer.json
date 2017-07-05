@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TB\\Form\\": "src"
+            "TB\\Form\\": "classes"
         }
     },
     "require-dev": {
